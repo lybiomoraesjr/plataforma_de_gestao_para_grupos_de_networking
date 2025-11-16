@@ -1,9 +1,25 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from 'sequelize';
 
-const databaseUrl = process.env.DATABASE_URL;
+const {
+  DATABASE_NAME,
+  DATABASE_USER,
+  DATABASE_PASSWORD,
+  DATABASE_HOST,
+  DATABASE_PORT,
+} = process.env;
 
-if (!databaseUrl) {
-  throw new Error("DATABASE_URL não está definida no .env");
+if (!DATABASE_NAME || !DATABASE_USER || !DATABASE_HOST || !DATABASE_PORT) {
+  throw new Error('Variáveis de ambiente do banco de dados não estão definidas');
 }
 
-export const sequelize = new Sequelize(databaseUrl, {});
+export const sequelize = new Sequelize(
+  DATABASE_NAME,
+  DATABASE_USER,
+  DATABASE_PASSWORD, 
+  {
+    host: DATABASE_HOST,
+    port: parseInt(DATABASE_PORT, 10),
+    dialect: 'postgres',
+    logging: console.log,
+  }
+);
