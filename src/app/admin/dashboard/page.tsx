@@ -1,23 +1,20 @@
-"use client";
-
 import type { ComponentType } from "react";
 import {
-  Plus,
-  DotsThreeOutline,
-  UsersThree,
-  ShareNetwork,
-  Handshake,
-  IconProps,
-} from "phosphor-react";
+  PlusIcon,
+  DotsThreeOutlineIcon,
+  UsersThreeIcon,
+  ShareNetworkIcon,
+  HandshakeIcon,
+} from "../../../components/icons";
 
 const stats: Array<{
   label: string;
   value: string;
-  icon: ComponentType<IconProps>;
+  icon: ComponentType<any>;
 }> = [
-  { label: "Membros Ativos", value: "42", icon: UsersThree },
-  { label: "Indicações no Mês", value: "15", icon: ShareNetwork },
-  { label: "Obrigados no Mês", value: "8", icon: Handshake },
+  { label: "Membros Ativos", value: "42", icon: UsersThreeIcon },
+  { label: "Indicações no Mês", value: "15", icon: ShareNetworkIcon },
+  { label: "Obrigados no Mês", value: "8", icon: HandshakeIcon },
 ];
 
 export default function AdminDashboardPage() {
@@ -32,14 +29,14 @@ export default function AdminDashboardPage() {
             type="button"
             className="flex items-center gap-2 rounded-lg bg-[#135bec] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[#135bec]/90"
           >
-            <Plus size={18} weight="bold" aria-hidden="true" />
+            <PlusIcon size={18} weight="bold" aria-hidden="true" />
             Adicionar Relatório
           </button>
           <button
             type="button"
             className="hidden items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm transition-colors hover:bg-gray-100 dark:border-gray-700 dark:bg-[#101622] dark:text-gray-100 dark:hover:bg-gray-800 sm:flex"
           >
-            <DotsThreeOutline size={18} weight="bold" aria-hidden="true" />
+            <DotsThreeOutlineIcon size={18} weight="bold" aria-hidden="true" />
           </button>
         </div>
       </div>

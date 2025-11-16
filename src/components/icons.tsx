@@ -14,6 +14,8 @@ import {
   IconProps,
 } from "phosphor-react";
 
+import { LockSimple } from "phosphor-react";
+
 export function SparkleIcon(props: IconProps) {
   return <Sparkle {...props} />;
 }
@@ -54,3 +56,6 @@ export function EnvelopeSimpleOpenIcon(props: IconProps) {
   return <EnvelopeSimpleOpen {...props} />;
 }
 
+export function LockSimpleIcon(props: IconProps) {
+  return <LockSimple {...props} />;
+}
