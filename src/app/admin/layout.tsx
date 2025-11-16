@@ -3,14 +3,17 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { EnvelopeSimpleOpenIcon, GaugeIcon } from "@/components/icons";
 
-
 const navItems: Array<{
   href: string;
   label: string;
   icon: ComponentType<any>;
 }> = [
   { href: "/admin/dashboard", label: "Dashboard", icon: GaugeIcon },
-  { href: "/admin/intencoes", label: "Intenções", icon: EnvelopeSimpleOpenIcon },
+  {
+    href: "/admin/intencoes",
+    label: "Intenções",
+    icon: EnvelopeSimpleOpenIcon,
+  },
 ];
 
 export default function AdminLayout({
