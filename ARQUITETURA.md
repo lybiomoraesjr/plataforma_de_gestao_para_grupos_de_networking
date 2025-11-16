@@ -1,33 +1,22 @@
-Com certeza. Você já tem todas as peças-chave.
-
-Aqui está um esqueleto robusto para o seu `ARQUITETURA.md`, já preenchido com tudo o que definimos (tecnologias, banco, endpoints) e estruturado para atender exatamente aos 4 entregáveis da Tarefa 1.
-
-O diagrama da arquitetura (item 1) eu criei em Mermaid, que é um formato de texto que o GitHub/GitLab renderiza automaticamente.
-
-[cite\_start]Você pode copiar e colar todo o conteúdo abaixo diretamente em um novo arquivo `ARQUITETURA.md` no seu repositório[cite: 45].
-
------
-
-````markdown
 # Documento de Arquitetura: Plataforma de Gestão de Networking
 
-[cite_start]Este documento detalha a visão de arquitetura para a plataforma de gestão de grupos de networking, conforme solicitado no teste técnico[cite: 3, 5].
+Este documento detalha a visão de arquitetura para a plataforma de gestão de grupos de networking, conforme solicitado no teste técnico.
 
 ## 1. Visão Geral e Tecnologias
 
-[cite_start]O objetivo é criar um sistema centralizado para substituir controles manuais [cite: 4][cite_start], cobrindo desde a admissão de membros até o controle financeiro e de performance[cite: 8].
+O objetivo é criar um sistema centralizado para substituir controles manuais, cobrindo desde a admissão de membros até o controle financeiro e de performance.
 
 A stack técnica escolhida para este projeto é:
 
-* [cite_start]**Frontend:** Next.js, React, Tailwind CSS, Phosphor Icons [cite: 24]
-* [cite_start]**Backend:** Next.js API Routes (Node.js) [cite: 24]
-* [cite_start]**Banco de Dados:** PostgreSQL [cite: 24]
+* **Frontend:** Next.js, React, Tailwind CSS, Phosphor Icons
+* **Backend:** Next.js API Routes (Node.js)
+* **Banco de Dados:** PostgreSQL
 * **ORM:** Sequelize
-* [cite_start]**Testes:** Jest, React Testing Library [cite: 25]
+* **Testes:** Jest, React Testing Library
 
 ## 2. Diagrama da Arquitetura
 
-[cite_start]Este diagrama [cite: 16] ilustra os componentes principais da solução e seu fluxo de comunicação.
+Este diagrama ilustra os componentes principais da solução e seu fluxo de comunicação.
 
 ```mermaid
 graph TD
@@ -52,20 +41,20 @@ graph TD
     APP -->|Requisições HTTP (fetch/axios)| API
     API -->|Consultas| ORM
     ORM -->|Conexão| DB
-````
+```
 
-## 3\. Modelo de Dados (PostgreSQL)
+## 3. Modelo de Dados (PostgreSQL)
 
-[cite\_start]O modelo de dados [cite: 17] [cite\_start]foi projetado para suportar todas as funcionalidades do sistema[cite: 8].
+O modelo de dados foi projetado para suportar todas as funcionalidades do sistema.
 
 ### 3.1. Justificativa da Escolha (PostgreSQL)
 
-[cite\_start]A escolha do **PostgreSQL** (um banco de dados SQL) foi feita pelos seguintes motivos[cite: 18]:
+A escolha do **PostgreSQL** (um banco de dados SQL) foi feita pelos seguintes motivos:
 
-1.  **Natureza Relacional:** O desafio é inerentemente relacional (membros, indicações, pagamentos, reuniões). O Postgres gerencia chaves estrangeiras e relacionamentos complexos de forma robusta.
-2.  **Integridade dos Dados:** O uso de tipos `ENUM` e `UUIDs`, além de constraints `FOREIGN KEY`, garante que os dados permaneçam limpos e consistentes.
-3.  [cite\_start]**Funcionalidades Avançadas:** O Postgres é excelente para consultas complexas, o que será vital para os Dashboards de Performance e Relatórios[cite: 14, 15].
-4.  **Escalabilidade:** É uma solução comprovada em produção que pode crescer junto com a plataforma.
+1. **Natureza Relacional:** O desafio é inerentemente relacional (membros, indicações, pagamentos, reuniões). O Postgres gerencia chaves estrangeiras e relacionamentos complexos de forma robusta.
+2. **Integridade dos Dados:** O uso de tipos `ENUM` e `UUIDs`, além de constraints `FOREIGN KEY`, garante que os dados permaneçam limpos e consistentes.
+3. **Funcionalidades Avançadas:** O Postgres é excelente para consultas complexas, o que será vital para os Dashboards de Performance e Relatórios.
+4. **Escalabilidade:** É uma solução comprovada em produção que pode crescer junto com a plataforma.
 
 ### 3.2. Script SQL (Schema Completo)
 
@@ -203,68 +192,53 @@ CREATE TABLE one_on_one_meetings (
 );
 ```
 
-## 4\. Definição da API (REST)
+## 4. Definição da API (REST)
 
-[cite\_start]A especificação dos principais endpoints da API [cite: 20] [cite\_start]que suportarão o fluxo de admissão obrigatório[cite: 21].
+A especificação dos principais endpoints da API que suportarão o fluxo de admissão obrigatório.
 
-### [cite\_start]Fluxo de Admissão de Membros [cite: 26, 27, 28, 29]
+### Fluxo de Admissão de Membros
 
-1.  **`POST /api/intentions`**
+1. **`POST /api/intentions`**
+   * **Descrição:** Submete um novo formulário de intenção.
+   * **Request Body:** `{ "name": "...", "email": "...", "company": "...", "reason": "..." }`
+   * **Response (201):** `{ "success": true, "intentionId": "..." }`
 
-      * [cite\_start]**Descrição:** Submete um novo formulário de intenção[cite: 26].
-      * **Request Body:** `{ "name": "...", "email": "...", "company": "...", "reason": "..." }`
-      * **Response (201):** `{ "success": true, "intentionId": "..." }`
+2. **`GET /api/admin/intentions`**
+   * **Descrição:** Lista todas as intenções para a área do admin.
+   * **Response (200):** `[ { "id": "...", "name": "...", "status": "PENDING", ... } ]`
 
-2.  **`GET /api/admin/intentions`**
+3. **`PATCH /api/admin/intentions/[id]`**
+   * **Descrição:** Aprova ou recusa uma intenção. Na aprovação, gera o token.
+   * **Request Body:** `{ "action": "APPROVE" | "REJECT" }`
+   * **Response (200):** `{ "success": true, "status": "APPROVED", "registrationLink": "..." }`
+   * *Nota: O `registrationLink` será logado no console para simular o envio.*
 
-      * [cite\_start]**Descrição:** Lista todas as intenções para a área do admin[cite: 27].
-      * **Response (200):** `[ { "id": "...", "name": "...", "status": "PENDING", ... } ]`
+4. **`GET /api/intentions/validate?token=...`**
+   * **Descrição:** Verifica se um token de cadastro é válido.
+   * **Response (200):** `{ "valid": true, "email": "..." }`
+   * **Response (404):** `{ "valid": false, "error": "Token inválido ou expirado" }`
 
-3.  **`PATCH /api/admin/intentions/[id]`**
-
-      * [cite\_start]**Descrição:** Aprova ou recusa uma intenção[cite: 28]. [cite\_start]Na aprovação, gera o token[cite: 29].
-      * **Request Body:** `{ "action": "APPROVE" | "REJECT" }`
-      * **Response (200):** `{ "success": true, "status": "APPROVED", "registrationLink": "..." }`
-      * [cite\_start]*Nota: O `registrationLink` será logado no console para simular o envio[cite: 30].*
-
-4.  **`GET /api/intentions/validate?token=...`**
-
-      * [cite\_start]**Descrição:** Verifica se um token de cadastro é válido[cite: 29].
-      * **Response (200):** `{ "valid": true, "email": "..." }`
-      * **Response (404):** `{ "valid": false, "error": "Token inválido ou expirado" }`
-
-5.  **`POST /api/users/register`**
-
-      * [cite\_start]**Descrição:** Cria o novo usuário (membro) após o preenchimento do cadastro completo[cite: 10].
-      * **Request Body:** `{ "token": "...", "name": "...", "email": "...", "company": "...", "password": "..." }`
-      * **Response (201):** `{ "success": true, "userId": "..." }`
+5. **`POST /api/users/register`**
+   * **Descrição:** Cria o novo usuário (membro) após o preenchimento do cadastro completo.
+   * **Request Body:** `{ "token": "...", "name": "...", "email": "...", "company": "...", "password": "..." }`
+   * **Response (201):** `{ "success": true, "userId": "..." }`
 
 ### Módulo Opcional (Exemplos)
 
-  * [cite\_start]**`POST /api/referrals`** (Para Opção A: Sistema de Indicações [cite: 32])
-  * [cite\_start]**`GET /api/dashboard`** (Para Opção B: Dashboard de Performance [cite: 34])
+* **`POST /api/referrals`** (Para Opção A: Sistema de Indicações)
+* **`GET /api/dashboard`** (Para Opção B: Dashboard de Performance)
 
-## 5\. Estrutura de Componentes (Frontend)
+## 5. Estrutura de Componentes (Frontend)
 
-[cite\_start]A estrutura de componentes do React/Next.js [cite: 19] será organizada com foco na reutilização e separação de responsabilidades.
+A estrutura de componentes do React/Next.js será organizada com foco na reutilização e separação de responsabilidades.
 
 *(Nota: Esta seção será detalhada durante a implementação prática.)*
 
-  * **`components/ui/`**: Componentes de UI puros e reutilizáveis (ex: `Button.tsx`, `Input.tsx`, `Card.tsx`).
-  * **`components/features/`**: Componentes compostos que lidam com uma funcionalidade específica (ex: `IntentionForm.tsx`, `AdminIntentionsTable.tsx`).
-  * **`lib/`**: Funções auxiliares, hooks customizados (ex: `useApi.ts`).
-  * **`app/`**: (Ou `pages/`) Estrutura de rotas do Next.js.
-      * `app/page.tsx` (Formulário de Intenção)
-      * `app/admin/intentions/page.tsx` (Dashboard do Admin)
-      * `app/cadastro-completo/page.tsx` (Formulário de Cadastro Completo)
-
-<!-- end list -->
-
-```
-
----
-
-[cite_start]Este arquivo `ARQUITETURA.md` cobre **todos os 4 entregáveis** da Tarefa 1[cite: 16, 17, 19, 20].
-
-Agora você pode focar em configurar o Sequelize para se conectar ao Postgres e começar a construir o primeiro endpoint (`POST /api/intentions`). Posso ajudar com a configuração do Sequelize, se quiser.
+* **`components/ui/`**: Componentes de UI puros e reutilizáveis (ex: `Button.tsx`, `Input.tsx`, `Card.tsx`).
+* **`components/features/`**: Componentes compostos que lidam com uma funcionalidade específica (ex: `IntentionForm.tsx`, `AdminIntentionsTable.tsx`).
+* **`lib/`**: Funções auxiliares, hooks customizados (ex: `useApi.ts`).
+* **`app/`**: (Ou `pages/`) Estrutura de rotas do Next.js.
+  * `app/page.tsx` (Formulário de Intenção)
+  * `app/admin/intentions/page.tsx` (Dashboard do Admin)
+  * `app/cadastro-completo/page.tsx` (Formulário de Cadastro Completo)
 ```
