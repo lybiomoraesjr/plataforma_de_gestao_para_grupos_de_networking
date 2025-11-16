@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { Intention } from "@/lib/models"; 
-import { sequelize } from "@/lib/db"; 
+import { Intention, User } from "@/lib/models";
+import { sequelize } from "@/lib/db";
+import { Op } from "sequelize";
 
 export async function POST(request: Request) {
   try {
@@ -16,11 +17,43 @@ export async function POST(request: Request) {
       );
     }
 
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Este e-mail já está cadastrado como membro.",
+        },
+        { status: 409 }
+      );
+    }
+
+    const existingIntention = await Intention.findOne({
+      where: {
+        email,
+        status: {
+          [Op.or]: ["PENDING", "APPROVED"],
+        },
+      },
+    });
+
+    if (existingIntention) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Este e-mail já possui uma intenção de participação em andamento.",
+        },
+        { status: 409 }
+      );
+    }
+
     const newIntention = await Intention.create({
       name,
       email,
       company,
       reason,
+      status: "PENDING",
     });
 
     return NextResponse.json(
