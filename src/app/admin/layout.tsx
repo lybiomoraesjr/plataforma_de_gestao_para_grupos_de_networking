@@ -1,21 +1,16 @@
-"use client";
-
-import React from "react";
+import React, { ComponentType } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Gauge,
-  EnvelopeSimpleOpen,
-  IconProps,
-} from "phosphor-react";
+import { EnvelopeSimpleOpenIcon, GaugeIcon } from "@/components/icons";
+
 
 const navItems: Array<{
   href: string;
   label: string;
-  icon: React.ComponentType<IconProps>;
+  icon: ComponentType<any>;
 }> = [
-  { href: "/admin/dashboard", label: "Dashboard", icon: Gauge },
-  { href: "/admin/intencoes", label: "Intenções", icon: EnvelopeSimpleOpen },
+  { href: "/admin/dashboard", label: "Dashboard", icon: GaugeIcon },
+  { href: "/admin/intencoes", label: "Intenções", icon: EnvelopeSimpleOpenIcon },
 ];
 
 export default function AdminLayout({
