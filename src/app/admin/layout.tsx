@@ -3,11 +3,19 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  Gauge,
+  EnvelopeSimpleOpen,
+  IconProps,
+} from "phosphor-react";
 
-const navItems = [
-  { href: "/admin/dashboard", label: "Dashboard", icon: "dashboard" },
-  { href: "/admin/intencoes", label: "Intenções", icon: "inbox" },
-  { href: "/admin/usuarios", label: "Usuários", icon: "group" },
+const navItems: Array<{
+  href: string;
+  label: string;
+  icon: React.ComponentType<IconProps>;
+}> = [
+  { href: "/admin/dashboard", label: "Dashboard", icon: Gauge },
+  { href: "/admin/intencoes", label: "Intenções", icon: EnvelopeSimpleOpen },
 ];
 
 export default function AdminLayout({
@@ -58,17 +66,16 @@ export default function AdminLayout({
                       : "text-gray-800 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800/50",
                   ].join(" ")}
                 >
-                  <span
-                    className={[
-                      "material-symbols-outlined text-xl",
+                  <item.icon
+                    size={22}
+                    weight={isActive ? "fill" : "regular"}
+                    className={
                       isActive
                         ? "text-[#135bec] dark:text-[#135bec]"
-                        : "text-gray-800 dark:text-gray-200",
-                    ].join(" ")}
+                        : "text-gray-800 dark:text-gray-200"
+                    }
                     aria-hidden="true"
-                  >
-                    {item.icon}
-                  </span>
+                  />
                   {item.label}
                 </Link>
               );

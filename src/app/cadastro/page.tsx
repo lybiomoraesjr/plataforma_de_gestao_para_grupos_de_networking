@@ -1,32 +1,127 @@
+import { EyeIcon } from "@/components/icons";
+
 export default function CadastroPage() {
   return (
-    <main>
-      <h1>Complete seu Cadastro</h1>
-      <p>Seu convite foi validado! Por favor, complete suas informações.</p>
+    <main className="flex min-h-screen w-full items-center justify-center bg-[#f6f6f8] px-4 py-10 font-sans dark:bg-[#101622] sm:py-16">
+      <div className="w-full max-w-lg rounded-xl bg-white p-6 shadow-sm dark:bg-[#121a2b]/80 sm:p-8 md:p-10">
+        <div className="flex flex-col gap-6">
+          <header className="flex flex-col gap-2 text-center">
+            <h1 className="text-3xl font-black leading-tight tracking-tight text-gray-900 dark:text-white">
+              Complete seu Cadastro
+            </h1>
+            <p className="text-base font-normal text-gray-600 dark:text-gray-300">
+              Seu convite foi validado! Por favor, complete suas informações.
+            </p>
+          </header>
 
-      <form>
-        <div>
-          <label htmlFor="fullName">Nome Completo</label>
-          <input id="fullName" name="fullName" type="text" />
+          <form className="flex flex-col gap-4">
+            <div className="flex flex-col">
+              <label
+                className="pb-2 text-base font-medium leading-normal text-gray-800 dark:text-gray-200"
+                htmlFor="email"
+              >
+                Email
+              </label>
+              <input
+                className="flex h-14 w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-gray-100 p-4 text-base font-normal leading-normal text-gray-500 placeholder:text-gray-500 focus:border-[#135bec] focus:ring-2 focus:ring-[#135bec]/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                id="email"
+                type="email"
+                value="user@example.com"
+                disabled
+                readOnly
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label
+                className="pb-2 text-base font-medium leading-normal text-gray-800 dark:text-gray-200"
+                htmlFor="fullName"
+              >
+                Nome Completo
+              </label>
+              <input
+                className="flex h-14 w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-4 text-base font-normal leading-normal text-gray-800 placeholder:text-gray-500 focus:border-[#135bec] focus:ring-2 focus:ring-[#135bec]/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
+                id="fullName"
+                name="fullName"
+                placeholder="Digite seu nome completo"
+                type="text"
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label
+                className="pb-2 text-base font-medium leading-normal text-gray-800 dark:text-gray-200"
+                htmlFor="phone"
+              >
+                Telefone / WhatsApp
+              </label>
+              <input
+                className="flex h-14 w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-4 text-base font-normal leading-normal text-gray-800 placeholder:text-gray-500 focus:border-[#135bec] focus:ring-2 focus:ring-[#135bec]/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
+                id="phone"
+                name="phone"
+                placeholder="(XX) XXXXX-XXXX"
+                type="tel"
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label
+                className="pb-2 text-base font-medium leading-normal text-gray-800 dark:text-gray-200"
+                htmlFor="password"
+              >
+                Crie uma Senha
+              </label>
+              <div className="relative flex w-full items-stretch">
+                <input
+                  className="flex h-14 w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-4 pr-12 text-base font-normal leading-normal text-gray-800 placeholder:text-gray-500 focus:border-[#135bec] focus:ring-2 focus:ring-[#135bec]/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
+                  id="password"
+                  name="password"
+                  type="password"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  <EyeIcon size={20} weight="regular" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex flex-col">
+              <label
+                className="pb-2 text-base font-medium leading-normal text-gray-800 dark:text-gray-200"
+                htmlFor="confirmPassword"
+              >
+                Confirme sua Senha
+              </label>
+              <div className="relative flex w-full items-stretch">
+                <input
+                  className="flex h-14 w-full flex-1 resize-none overflow-hidden rounded-lg border border-gray-300 bg-white p-4 pr-12 text-base font-normal leading-normal text-gray-800 placeholder:text-gray-500 focus:border-[#135bec] focus:ring-2 focus:ring-[#135bec]/20 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Digite sua senha novamente"
+                  type="password"
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  <EyeIcon size={20} weight="regular" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+
+            <div className="pt-4">
+              <button
+                type="submit"
+                className="flex h-14 w-full items-center justify-center rounded-lg bg-[#135bec] px-6 text-base font-semibold text-white transition-colors hover:bg-[#135bec]/90 focus:outline-none focus:ring-2 focus:ring-[#135bec] focus:ring-offset-2 dark:focus:ring-offset-[#101622]"
+              >
+                Finalizar Cadastro e Acessar
+              </button>
+            </div>
+          </form>
         </div>
-
-        <div>
-          <label htmlFor="phone">Telefone / WhatsApp</label>
-          <input id="phone" name="phone" type="tel" />
-        </div>
-
-        <div>
-          <label htmlFor="password">Crie uma Senha</label>
-          <input id="password" name="password" type="password" />
-        </div>
-
-        <div>
-          <label htmlFor="confirmPassword">Confirme sua Senha</label>
-          <input id="confirmPassword" name="confirmPassword" type="password" />
-        </div>
-
-        <button type="submit">Finalizar Cadastro</button>
-      </form>
+      </div>
     </main>
-  )
+  );
 }
