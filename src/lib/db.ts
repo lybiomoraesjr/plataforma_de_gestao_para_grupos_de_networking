@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import pg from 'pg';
 
 const {
   DATABASE_NAME,
@@ -21,5 +22,6 @@ export const sequelize = new Sequelize(
     port: parseInt(DATABASE_PORT, 10),
     dialect: 'postgres',
     logging: console.log,
+    dialectModule: pg,
   }
 );
