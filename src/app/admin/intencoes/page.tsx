@@ -1,12 +1,31 @@
 "use client";
 
+import React from 'react';
 import { useSearchParams } from "next/navigation";
 import { useGetIntentions } from "@/hooks/useGetIntentions";
+import { useUpdateIntentionStatus } from '@/hooks/useUpdateIntentionStatus';
 
 export default function AdminIntencoesPage() {
   const searchParams = useSearchParams();
-  const key = searchParams.get("key");
-  const { intentions, isLoading, error } = useGetIntentions(key);
+  const adminKey = searchParams.get("key");
+  const { intentions, isLoading, error } = useGetIntentions(adminKey);
+  const { updateStatus, isLoading: isUpdating, error: updateError } = useUpdateIntentionStatus(adminKey);
+
+  const handleApprove = async (intentionId: string) => {
+    const result = await updateStatus(intentionId, 'APPROVE');
+    if (result?.success) {
+      alert('Intenção aprovada com sucesso!');
+      // TODO: Recarregar a lista de intenções
+    }
+  };
+
+  const handleReject = async (intentionId: string) => {
+    const result = await updateStatus(intentionId, 'REJECT');
+    if (result?.success) {
+      alert('Intenção rejeitada com sucesso!');
+      // TODO: Recarregar a lista de intenções
+    }
+  };
 
   if (isLoading) {
     return (
@@ -38,6 +57,9 @@ export default function AdminIntencoesPage() {
         <h1 className="text-4xl font-black leading-tight tracking-[-0.033em] text-gray-900 dark:text-white">
           Admin: Gestão de Intenções
         </h1>
+        {updateError && (
+          <p className="text-red-500 mt-4">{updateError}</p>
+        )}
       </header>
 
       <div className="w-full @container">
@@ -103,20 +125,26 @@ export default function AdminIntencoesPage() {
                       {intention.status}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
-                      <div className="flex items-center gap-2">
-                        <button
-                          type="button"
-                          className="rounded bg-[#198754] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#156c43]"
-                        >
-                          APROVAR
-                        </button>
-                        <button
-                          type="button"
-                          className="rounded bg-[#DC3545] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#b02a37]"
-                        >
-                          RECUSAR
-                        </button>
-                      </div>
+                      {intention.status === "PENDING" && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleApprove(intention.id)}
+                            disabled={isUpdating}
+                            className="rounded bg-[#198754] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#156c43] disabled:opacity-50"
+                          >
+                            APROVAR
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleReject(intention.id)}
+                            disabled={isUpdating}
+                            className="rounded bg-[#DC3545] px-3 py-1.5 text-xs font-bold text-white transition-colors hover:bg-[#b02a37] disabled:opacity-50"
+                          >
+                            RECUSAR
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
