@@ -4,17 +4,17 @@ import { sequelize } from "../db";
 const IntentionStatus = DataTypes.ENUM("PENDING", "APPROVED", "REJECTED");
 
 class Intention extends Model {
-  public id!: string;
-  public name!: string;
-  public email!: string;
-  public company?: string;
-  public reason?: string;
-  public status!: "PENDING" | "APPROVED" | "REJECTED";
-  public registrationToken?: string;
-  public tokenExpiresAt?: Date;
-  public processedByAdminId?: string;
+  declare id: string;
+  declare name: string;
+  declare email: string;
+  declare company: string | null;
+  declare reason: string | null;
+  declare status: "PENDING" | "APPROVED" | "REJECTED";
+  declare registrationToken: string | null;
+  declare tokenExpiresAt: Date | null;
+  declare processedByAdminId: string | null;
 
-  public readonly createdAt!: Date;
+  declare readonly createdAt: Date;
 }
 
 Intention.init(
