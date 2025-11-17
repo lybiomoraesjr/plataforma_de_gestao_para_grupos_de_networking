@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Pré-requisitos
 
-## Getting Started
+- Node.js 18+
+- Banco PostgreSQL acessível (local ou remoto)
 
-First, run the development server:
+## Configuração
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Instale dependências:
+   ```bash
+   npm install
+   ```
+2. Crie um arquivo `.env` na raiz com as variáveis mínimas:
+   ```env
+   DATABASE_NAME=SEU_BANCO
+   DATABASE_USER=SEU_USUARIO
+   DATABASE_PASSWORD=SUA_SENHA
+   DATABASE_HOST=localhost
+   DATABASE_PORT=5432
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ADMIN_ACCESS_KEY=minha-chave-secreta
+   ```
+   > O aplicativo não inicializa sem credenciais válidas de banco.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Executando o projeto Next.js
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Ambiente de desenvolvimento:
+  ```bash
+  npm run dev
+  ```
+  Acesse `http://localhost:3000`.
+- Página de administrador: adicione `?accessKey=<valor ADMIN_ACCESS_KEY>` à URL para liberar o acesso, por exemplo `http://localhost:3000/admin/intentions?accessKey=minha-chave-secreta`.
+- Sempre que uma intenção for aprovada, o servidor exibirá no terminal o link de cadastro completo correspondente.
 
-## Learn More
+## Testes (Jest)
 
-To learn more about Next.js, take a look at the following resources:
+- Executar toda a suíte:
+  ```bash
+  npm test
+  ```
+- Ou rodar apenas um arquivo:
+  ```bash
+  npx jest src/app/__tests__/home-page.test.tsx
+  ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Outras informações
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- As instruções de arquitetura detalhadas serão documentadas em `ARQUITETURA.md`.
