@@ -1,12 +1,9 @@
-// src/app/api/intentions/validate/route.ts
-
 import { NextResponse } from "next/server";
 import { Intention } from "@/lib/models";
-import { Op } from "sequelize"; // Importa o operador do Sequelize
+import { Op } from "sequelize"; 
 
 export async function GET(request: Request) {
   try {
-    // 1. Pega a URL e extrai o parâmetro 'token'
     const { searchParams } = new URL(request.url);
     const token = searchParams.get("token");
 
@@ -17,16 +14,15 @@ export async function GET(request: Request) {
       );
     }
 
-    // 2. Procura a intenção no banco com esse token
     const intention = await Intention.findOne({
       where: {
         registrationToken: token,
         status: "APPROVED",
-        // 3. Garante que o token não expirou
         tokenExpiresAt: {
-          [Op.gt]: new Date(), // 'Op.gt' significa "greater than" (maior que)
+          [Op.gt]: new Date(), 
         },
       },
+      attributes: ['email'],
     });
 
     if (!intention) {
