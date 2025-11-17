@@ -1,31 +1,64 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from "next/navigation";
 import { useGetIntentions } from "@/hooks/useGetIntentions";
 import { useUpdateIntentionStatus } from '@/hooks/useUpdateIntentionStatus';
 
+interface Intention {
+  id: string;
+  name: string;
+  email: string;
+  company?: string;
+  reason?: string;
+  status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  created_at: string;
+}
+
 export default function AdminIntencoesPage() {
   const searchParams = useSearchParams();
   const adminKey = searchParams.get("key");
-  const { intentions, isLoading, error } = useGetIntentions(adminKey);
+  const { intentions: fetchedIntentions, isLoading, error } = useGetIntentions(adminKey);
   const { updateStatus, isLoading: isUpdating, error: updateError } = useUpdateIntentionStatus(adminKey);
+  const [intentions, setIntentions] = useState<Intention[]>([]);
+
+  useEffect(() => {
+    setIntentions(fetchedIntentions);
+  }, [fetchedIntentions]);
 
   const handleApprove = async (intentionId: string) => {
     const result = await updateStatus(intentionId, 'APPROVE');
     if (result?.success) {
-      alert('Intenção aprovada com sucesso!');
-      // TODO: Recarregar a lista de intenções
+      setIntentions(currentIntentions =>
+        currentIntentions.map(intention =>
+          intention.id === intentionId
+            ? { ...intention, status: 'APPROVED' as const }
+            : intention
+        )
+      );
     }
   };
 
   const handleReject = async (intentionId: string) => {
     const result = await updateStatus(intentionId, 'REJECT');
     if (result?.success) {
-      alert('Intenção rejeitada com sucesso!');
-      // TODO: Recarregar a lista de intenções
+      setIntentions(currentIntentions =>
+        currentIntentions.map(intention =>
+          intention.id === intentionId
+            ? { ...intention, status: 'REJECTED' as const }
+            : intention
+        )
+      );
     }
   };
+
+  const sortedIntentions = useMemo(() => {
+    return [...intentions].sort((a, b) => {
+      if (a.status === 'PENDING' && b.status !== 'PENDING') return -1;
+      if (a.status !== 'PENDING' && b.status === 'PENDING') return 1;
+      return 0;
+    });
+  }, [intentions]);
 
   if (isLoading) {
     return (
@@ -107,7 +140,7 @@ export default function AdminIntencoesPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {intentions.map((intention) => (
+                {sortedIntentions.map((intention) => (
                   <tr key={intention.id}>
                     <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
                       {intention.name}
