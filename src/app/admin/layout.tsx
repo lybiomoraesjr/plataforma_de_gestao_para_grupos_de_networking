@@ -2,7 +2,7 @@
 
 import React, { ComponentType } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { EnvelopeSimpleOpenIcon, GaugeIcon } from "@/components/icons";
 
 const navItems: Array<{
@@ -24,6 +24,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const adminKey = searchParams.get("key");
 
   return (
     <div className="min-h-screen bg-[#f6f6f8] font-sans text-gray-900 dark:bg-[#101622] dark:text-gray-100">
@@ -58,7 +61,7 @@ export default function AdminLayout({
               return (
                 <Link
                   key={item.href}
-                  href={item.href}
+                  href={`${item.href}?key=${adminKey || ""}`}
                   className={[
                     "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium leading-normal transition-colors",
                     isActive
