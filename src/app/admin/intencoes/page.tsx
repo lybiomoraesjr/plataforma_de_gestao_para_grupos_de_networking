@@ -1,31 +1,37 @@
-const requests = [
-  {
-    nome: "Beatriz Costa",
-    email: "beatriz.costa@example.com",
-    empresa: "InnovateTech",
-    motivo: "Expandir minha rede profissional.",
-  },
-  {
-    nome: "Carlos Mendes",
-    email: "carlos.mendes@example.com",
-    empresa: "Solutions Co",
-    motivo: "Buscar novas oportunidades de negócio.",
-  },
-  {
-    nome: "Daniela Almeida",
-    email: "daniela.almeida@example.com",
-    empresa: "FutureWorks",
-    motivo: "Conectar com líderes da indústria.",
-  },
-  {
-    nome: "Eduardo Santos",
-    email: "eduardo.santos@example.com",
-    empresa: "DataDriven Inc.",
-    motivo: "Compartilhar conhecimento e aprender.",
-  },
-];
+"use client";
+
+import { useSearchParams } from "next/navigation";
+import { useGetIntentions } from "@/hooks/useGetIntentions";
 
 export default function AdminIntencoesPage() {
+  const searchParams = useSearchParams();
+  const key = searchParams.get("key");
+  const { intentions, isLoading, error } = useGetIntentions(key);
+
+  if (isLoading) {
+    return (
+      <section className="mx-auto w-full max-w-7xl">
+        <p className="text-center text-lg">Carregando intenções...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="mx-auto w-full max-w-7xl">
+        <p className="text-center text-lg text-red-500">{error}</p>
+      </section>
+    );
+  }
+
+  if (intentions.length === 0) {
+    return (
+      <section className="mx-auto w-full max-w-7xl">
+        <p className="text-center text-lg">Nenhuma intenção encontrada.</p>
+      </section>
+    );
+  }
+
   return (
     <section className="mx-auto w-full max-w-7xl">
       <header className="mb-8">
@@ -68,24 +74,33 @@ export default function AdminIntencoesPage() {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
                   >
+                    Status
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  >
                     Ações
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {requests.map((request) => (
-                  <tr key={request.email}>
+                {intentions.map((intention) => (
+                  <tr key={intention.id}>
                     <td className="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                      {request.nome}
+                      {intention.name}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                      {request.email}
+                      {intention.email}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                      {request.empresa}
+                      {intention.company || "-"}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
-                      {request.motivo}
+                      {intention.reason || "-"}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-500 dark:text-gray-400">
+                      {intention.status}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
                       <div className="flex items-center gap-2">
