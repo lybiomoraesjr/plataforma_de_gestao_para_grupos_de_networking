@@ -29,7 +29,7 @@
   npm run dev
   ```
   Acesse `http://localhost:3000`.
-- Página de administrador: adicione `?accessKey=<valor ADMIN_ACCESS_KEY>` à URL para liberar o acesso, por exemplo `http://localhost:3000/admin/intentions?accessKey=minha-chave-secreta`.
+- Página de administrador: adicione `?key=<valor ADMIN_ACCESS_KEY>` à URL para liberar o acesso, por exemplo `http://localhost:3000/admin/intentions?key=minha-chave-secreta`.
 - Sempre que uma intenção for aprovada, o servidor exibirá no terminal o link de cadastro completo correspondente.
 
 ## Testes (Jest)
