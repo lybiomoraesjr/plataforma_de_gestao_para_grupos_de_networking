@@ -27,7 +27,7 @@ export async function PATCH(
 
     if (action === "APPROVE") {
       const token = crypto.randomBytes(32).toString("hex");
-      const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
+      const expires = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
 
       await intention.update({
         status: "APPROVED",

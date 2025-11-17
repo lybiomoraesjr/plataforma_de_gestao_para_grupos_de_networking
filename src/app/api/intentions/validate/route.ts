@@ -24,6 +24,7 @@ export async function GET(request: Request) {
       },
       attributes: ['email'],
     });
+    // TODO: criar endpoint para renovar tokens expirados ou próximos do vencimento.
 
     if (!intention) {
       return NextResponse.json(
