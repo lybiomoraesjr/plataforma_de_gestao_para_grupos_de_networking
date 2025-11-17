@@ -13,10 +13,13 @@ A stack técnica escolhida para este projeto é:
 * **Banco de Dados:** PostgreSQL
 * **ORM:** Sequelize
 * **Testes:** Jest, React Testing Library
+* **Integração Frontend-API:** hooks customizados fazem chamadas HTTP via Axios para as rotas da API.
 
 ## 2. Diagrama da Arquitetura
 
 Este diagrama ilustra os componentes principais da solução e seu fluxo de comunicação.
+
+![Diagrama da Arquitetura](./diagrama_da_arquitetura.png)
 
 ```mermaid
 graph TD
@@ -46,6 +49,8 @@ graph TD
 ## 3. Modelo de Dados (PostgreSQL)
 
 O modelo de dados foi projetado para suportar todas as funcionalidades do sistema.
+
+![Modelo de Dados](./modelo_de_dados.png)
 
 ### 3.1. Justificativa da Escolha (PostgreSQL)
 
@@ -223,6 +228,14 @@ A especificação dos principais endpoints da API que suportarão o fluxo de adm
    * **Request Body:** `{ "token": "...", "name": "...", "email": "...", "company": "...", "password": "..." }`
    * **Response (201):** `{ "success": true, "userId": "..." }`
 
+| Método | Endpoint | Finalidade |
+| --- | --- | --- |
+| `POST` | `/api/intentions` | Receber intenções públicas de participação. |
+| `GET` | `/api/admin/intentions` | Listar intenções ordenadas por data para o admin. |
+| `PATCH` | `/api/admin/intentions/[id]` | Aprovar ou rejeitar intenção e gerar token. |
+| `GET` | `/api/intentions/validate?token=` | Validar token de cadastro enviado ao convidado. |
+| `POST` | `/api/users/register` | Criar membro definitivo e limpar token utilizado. |
+
 ### Módulo Opcional (Exemplos)
 
 * **`POST /api/referrals`** (Para Opção A: Sistema de Indicações)
@@ -230,15 +243,39 @@ A especificação dos principais endpoints da API que suportarão o fluxo de adm
 
 ## 5. Estrutura de Componentes (Frontend)
 
-A estrutura de componentes do React/Next.js será organizada com foco na reutilização e separação de responsabilidades.
+A implementação atual não exigiu componentes reutilizáveis adicionais além de `src/components/icons.tsx`, que centraliza os ícones do Phosphor para o frontend. As páginas do App Router consomem diretamente os hooks e estilos. Caso a aplicação cresça, a estrutura planejada segue a divisão abaixo:
 
-*(Nota: Esta seção será detalhada durante a implementação prática.)*
+- `components/ui/`: componentes visuais puros (botões, inputs, cards).
+- `components/features/`: componentes que agrupam lógica de cada fluxo (ex.: formulários de intenção ou listagens de admin).
+- `lib/`: hooks customizados e helpers compartilhados.
+- `app/`: rotas do Next.js (formulário público, área admin, cadastro com token).
 
-* **`components/ui/`**: Componentes de UI puros e reutilizáveis (ex: `Button.tsx`, `Input.tsx`, `Card.tsx`).
-* **`components/features/`**: Componentes compostos que lidam com uma funcionalidade específica (ex: `IntentionForm.tsx`, `AdminIntentionsTable.tsx`).
-* **`lib/`**: Funções auxiliares, hooks customizados (ex: `useApi.ts`).
-* **`app/`**: (Ou `pages/`) Estrutura de rotas do Next.js.
-  * `app/page.tsx` (Formulário de Intenção)
-  * `app/admin/intentions/page.tsx` (Dashboard do Admin)
-  * `app/cadastro-completo/page.tsx` (Formulário de Cadastro Completo)
+## 6. Bibliotecas Utilizadas
+
+### Dependências
+- `axios`
+- `bcrypt`
+- `next`
+- `pg` e `pg-hstore`
+- `phosphor-react`
+- `react`
+- `react-dom`
+- `sequelize`
+
+### Dependências de desenvolvimento
+- `@tailwindcss/postcss`
+- `@testing-library/jest-dom`
+- `@testing-library/react`
+- `@types/bcrypt`
+- `@types/jest`
+- `@types/node`
+- `@types/pg`
+- `@types/react`
+- `@types/react-dom`
+- `eslint`
+- `eslint-config-next`
+- `jest`
+- `jest-environment-jsdom`
+- `tailwindcss`
+- `typescript`
 ```
