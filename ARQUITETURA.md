@@ -21,31 +21,6 @@ Este diagrama ilustra os componentes principais da solução e seu fluxo de comu
 
 ![Diagrama da Arquitetura](./diagrama_da_arquitetura.png)
 
-```mermaid
-graph TD
-    subgraph "Usuário"
-        U(Membro / Admin)
-    end
-
-    subgraph "Frontend (Cliente)"
-        APP[Next.js / React]
-    end
-
-    subgraph "Backend (Servidor)"
-        API[Next.js API Routes]
-        ORM[Sequelize]
-    end
-
-    subgraph "Banco de Dados"
-        DB[(PostgreSQL)]
-    end
-
-    U --> APP
-    APP -->|Requisições HTTP (fetch/axios)| API
-    API -->|Consultas| ORM
-    ORM -->|Conexão| DB
-```
-
 ## 3. Modelo de Dados (PostgreSQL)
 
 O modelo de dados foi projetado para suportar todas as funcionalidades do sistema.
@@ -236,10 +211,9 @@ A especificação dos principais endpoints da API que suportarão o fluxo de adm
 | `GET` | `/api/intentions/validate?token=` | Validar token de cadastro enviado ao convidado. |
 | `POST` | `/api/users/register` | Criar membro definitivo e limpar token utilizado. |
 
-### Módulo Opcional (Exemplos)
+### Módulo Opcional Escolhido
 
-* **`POST /api/referrals`** (Para Opção A: Sistema de Indicações)
-* **`GET /api/dashboard`** (Para Opção B: Dashboard de Performance)
+Optei pela **Opção B - Dashboard de Performance**. A página correspondente está mockada, exibindo indicadores fictícios para demonstrar o layout e a integração futura com dados reais.
 
 ## 5. Estrutura de Componentes (Frontend)
 
