@@ -45,4 +45,4 @@
 
 ## Outras informações
 
-- As instruções de arquitetura detalhadas serão documentadas em `ARQUITETURA.md`.
+- As instruções de arquitetura detalhadas estão documentadas em `ARQUITETURA.md`.
