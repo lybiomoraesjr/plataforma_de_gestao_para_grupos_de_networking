@@ -20,6 +20,7 @@
    ADMIN_ACCESS_KEY=minha-chave-secreta
    ```
    > O aplicativo não inicializa sem credenciais válidas de banco.
+3. Garanta que o banco apontado em `DATABASE_NAME` já exista. O Sequelize cria apenas as tabelas; se o banco não estiver criado, a conexão falha imediatamente.
 
 ## Executando o projeto Next.js
 
